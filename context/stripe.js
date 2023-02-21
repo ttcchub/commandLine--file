@@ -2,25 +2,30 @@ import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
+const promotionCode = await stripe.promotionCodes.create({
+        coupon: 'YxKefJOE',
+        code: 'VIPCODE',
+      });
+      
 
 export default async function handler(req, res) {
-  if (req.method === 'POST') {    
+  if (req.method === 'POST') {
+
+    
     try {
-
-
-      const coupon = await stripe.coupons.create({percent_off: 20, duration: 'once'});
-
+      const promotionCode = await stripe.promotionCodes.create({
+        coupon: 'YxKefJOE',
+        code: 'VIPCODE',
+      });
+      
       const params = {
         submit_type: 'pay', 
         mode: 'payment',
-
-        discounts: [{
-          coupon: 'FREE_DELIVERY',
-        }],
         allow_promotion_codes: true,
         payment_method_types: ['card'],
         billing_address_collection: 'required',     
         shipping_options: [
+          { shipping_rate: 'shr_1MacBSLX27mVeMm892noFsut' },
           { shipping_rate: 'shr_1MadSPLX27mVeMm82Q8KjntT' },
           { shipping_rate: 'shr_1MacBeLX27mVeMm8aI0Lya4h' },
         ],
@@ -42,7 +47,6 @@ export default async function handler(req, res) {
             quantity: item.quantity
           }
         }),
-
         allow_promotion_codes: true,
         success_url: `${req.headers.origin}/success`,
         cancel_url: `${req.headers.origin}/` ,

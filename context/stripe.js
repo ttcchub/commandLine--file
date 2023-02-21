@@ -6,10 +6,15 @@ export default async function handler(req, res) {
   if (req.method === 'POST') {
     // console.log(req.body.cartItems)
     try {
+      const promotionCode = await stripe.promotionCodes.create({
+        coupon: 'L6H1Hpri',
+        code: 'GUTTA',
+      });
       const params = {
         submit_type: 'pay',
         mode: 'payment',
-        // payment_method_types: ['card'],
+        allow_promotion_codes: true,
+        payment_method_types: ['card'],
         billing_address_collection: 'auto',
         shipping_options: [
           { shipping_rate: 'shr_1MHC9lLX27mVeMm8KRhLRTIK' },
@@ -35,6 +40,7 @@ export default async function handler(req, res) {
             quantity: item.quantity
           }
         }),
+        allow_promotion_codes: true,
         success_url: `${req.headers.origin}/success`,
         cancel_url: `${req.headers.origin}/canceled`,
       }

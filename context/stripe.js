@@ -7,8 +7,8 @@ export default async function handler(req, res) {
     // console.log(req.body.cartItems)
     try {
       const promotionCode = await stripe.promotionCodes.create({
-        coupon: 'L6H1Hpri',
-        code: 'GUTTA',
+        coupon: 'YxKefJOE',
+        code: 'VIPCODE',
       });
       const params = {
         submit_type: 'pay',

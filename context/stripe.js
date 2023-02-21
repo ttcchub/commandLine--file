@@ -2,6 +2,11 @@ import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
+const promotionCode = await stripe.promotionCodes.create({
+        coupon: 'YxKefJOE',
+        code: 'VIPCODE',
+      });
+      
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
